@@ -7,11 +7,18 @@ import Filter from "./Filter";
 
 class App extends Component {
   constructor() {
+    let newHogs = hogs.map((hog) => {
+      return {
+        ...hog,
+        hidden: false,
+      };
+    });
+
     super();
     this.state = {
-      hogs: hogs,
+      hogs: newHogs,
       greased: false,
-      sortBy: ""
+      sortBy: "",
     };
   }
 
@@ -24,28 +31,44 @@ class App extends Component {
   };
 
   hogsToShow = () => {
-    let updatedHogs = this.state.hogs;
+    let updatedHogs = this.state.hogs.filter(hog=>hog.hidden === false)
     if (this.state.greased) {
       updatedHogs = this.state.hogs.filter((hog) => hog.greased);
     }
-    if(this.state.sortBy === "weight"){
-
+    if (this.state.sortBy === "weight") {
     }
     return updatedHogs;
   };
 
-  sortBy=(e)=>{
-    
+  sortBy = (e) => {
     this.setState({
-      sortBy: e.target.value
+      sortBy: e.target.value,
+    });
+  };
+
+  hideMe = (hname) => {
+    let updateHogs = this.state.hogs.map(hog=>{
+      if(hog.name === hname){
+        return {
+          ...hog,
+          hidden: true
+        }
+      }else{
+        return hog
+      }
     })
-  }
+
+    this.setState({
+      hogs: updateHogs
+    })
+  };
+
   render() {
     const showHogs = this.hogsToShow();
     return (
       <div className="App">
-        <Nav handleToggle={this.handleToggle} sortBy={this.sortBy}/>
-        <HogContainer hogs={showHogs} />
+        <Nav handleToggle={this.handleToggle} sortBy={this.sortBy} />
+        <HogContainer hogs={showHogs} hideMe={this.hideMe} />
         <Filter />
       </div>
     );

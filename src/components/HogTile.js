@@ -17,28 +17,32 @@ class HogTile extends Component {
   renderDetails = () => {
     const { greased, name, speciality, weight } = this.props;
     return (
-      <div>
+        <div>
         <p>{speciality}</p>
         <p>{weight}</p>
       </div>
     );
-  };
+};
 
-  showDetails = () => {
+showDetails = () => {
     this.setState((prev) => {
-      return {
-        showDetails: !prev.showDetails,
-      };
+        return {
+            showDetails: !prev.showDetails,
+        };
     });
-  };
+};
 
-  render() {
+render() {
+    const { greased, name, speciality, weight } = this.props;
     return (
       <div className="ui seven wide column pigTile">
-        <p>{this.props.name}</p>
+        <p>{name}</p>
         {this.renderImage()}
         <div>
           <button onClick={this.showDetails}>Show Details</button>
+        </div>
+        <div>
+          <button onClick={()=>this.props.hideMe(name)}>Hide Me</button>
         </div>
         {this.state.showDetails ? this.renderDetails() : null}
       </div>
